@@ -4,6 +4,7 @@
 
 import React from "react";
 import AddProduct from "../components/addproduct.component";
+import AddProductVariation from "../components/addvariation.component";
 import HomeComponent from "../components/dashboard.component";
 
 const Routes = [
@@ -35,6 +36,11 @@ const Routes = [
       </>
     ),
     name: () => <>Upload CSV</>,
+  },
+  {
+    path: "/dashboard/add-variations",
+    main: AddProductVariation,
+    name: () => <>Add Product Variations</>,
   },
   {
     path: "/dashboard/variations",
