@@ -6,7 +6,9 @@ import React from "react";
 import AddProduct from "../components/addproduct.component";
 import AddProductVariation from "../components/addvariation.component";
 import HomeComponent from "../components/dashboard.component";
+import Orders from "../components/orders.component";
 import Products from "../components/products.component";
+import UploadCSV from "../components/uploadCSV.component";
 import Variations from "../components/variation.component.";
 
 const Routes = [
@@ -28,11 +30,7 @@ const Routes = [
   },
   {
     path: "/dashboard/upload-csv",
-    main: () => (
-      <>
-        <h1>Upload CSV</h1>
-      </>
-    ),
+    main: UploadCSV,
     name: () => <>Upload CSV</>,
   },
   {
@@ -47,11 +45,7 @@ const Routes = [
   },
   {
     path: "/dashboard/orders",
-    main: () => (
-      <>
-        <h1>Orders</h1>
-      </>
-    ),
+    main: Orders,
     name: () => <>Orders</>,
   },
   {

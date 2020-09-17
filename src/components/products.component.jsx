@@ -13,6 +13,7 @@ import { UploadOutlined, PlusOutlined, DownOutlined } from "@ant-design/icons";
 import TableComponent from "./table.component";
 
 const Products = () => {
+  // @TODO: Change dummy data in table
   const { Title } = Typography;
   const { Search } = Input;
 
