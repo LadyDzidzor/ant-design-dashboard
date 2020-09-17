@@ -6,6 +6,7 @@ import React from "react";
 import AddProduct from "../components/addproduct.component";
 import AddProductVariation from "../components/addvariation.component";
 import HomeComponent from "../components/dashboard.component";
+import Products from "../components/products.component";
 import Variations from "../components/variation.component.";
 
 const Routes = [
@@ -17,11 +18,7 @@ const Routes = [
   },
   {
     path: "/dashboard/products",
-    main: () => (
-      <>
-        <h1>Products</h1>
-      </>
-    ),
+    main: Products,
     name: () => <>Products</>,
   },
   {

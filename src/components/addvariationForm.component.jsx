@@ -50,6 +50,8 @@ const AddVariationForm = () => {
 
   const onPrimarySwitch = (checked) => {
     console.log(`switch to ${checked}`);
+    if (checked) setAttrPrice(checked);
+    if (!checked) setAttrPrice(!primaryAttrPrice);
   };
 
   return (
@@ -103,9 +105,7 @@ const AddVariationForm = () => {
                             {...field}
                             name={[field.name, "primaryAttr"]}
                             key={[field.fieldKey, "primaryAttr"]}
-                            onChange={(e, record) =>
-                              onPrimarySwitch(e, record.checked)
-                            }
+                            onChange={onPrimarySwitch}
                           />{" "}
                           <Tooltip title="Making primary attribute means pricing will be base it.">
                             <InfoCircleOutlined />
