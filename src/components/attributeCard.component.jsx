@@ -16,9 +16,16 @@ import {
   CloseOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
+import AdvancePriceModal from "./advancePriceModal.component";
 
 const AttributeCard = ({ field, remove }) => {
   const [primaryAttrPrice, setAttrPrice] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const onCreate = (values) => {
+    console.log("Received values of form: ", values);
+    setVisible(false);
+  };
 
   const onPrimarySwitch = (checked) => {
     console.log(`switch to ${checked}`);
@@ -32,6 +39,13 @@ const AttributeCard = ({ field, remove }) => {
 
   return (
     <>
+      <AdvancePriceModal
+        visible={visible}
+        onCreate={onCreate}
+        onCancel={() => {
+          setVisible(false);
+        }}
+      />
       <Card
         key={field.key}
         extra={
@@ -74,7 +88,11 @@ const AttributeCard = ({ field, remove }) => {
                 {field.map((field) => (
                   <Space
                     key={field.key}
-                    style={{ display: "flex", marginBottom: 5 }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginBottom: 5,
+                    }}
                     align="start"
                   >
                     <Form.Item
@@ -106,31 +124,41 @@ const AttributeCard = ({ field, remove }) => {
                     </Form.Item>
 
                     {primaryAttrPrice ? (
-                      <Form.Item
-                        {...field}
-                        name={[field.name, "price"]}
-                        fieldKey={[field.fieldKey, "price"]}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Missing price",
-                          },
-                        ]}
-                      >
-                        <InputNumber
-                          defaultValue={0}
-                          formatter={(value) =>
-                            `\u00A2 ${value}`.replace(
-                              /\B(?=(\d{3})+(?!\d))/g,
-                              ","
-                            )
-                          }
-                          parser={(value) =>
-                            value.replace(/\u00A2\s?|(,*)/g, "")
-                          }
-                          onChange={onChange}
-                        />
-                      </Form.Item>
+                      <>
+                        <Form.Item
+                          {...field}
+                          name={[field.name, "price"]}
+                          fieldKey={[field.fieldKey, "price"]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Missing price",
+                            },
+                          ]}
+                        >
+                          <InputNumber
+                            defaultValue={0}
+                            formatter={(value) =>
+                              `\u00A2 ${value}`.replace(
+                                /\B(?=(\d{3})+(?!\d))/g,
+                                ","
+                              )
+                            }
+                            parser={(value) =>
+                              value.replace(/\u00A2\s?|(,*)/g, "")
+                            }
+                            onChange={onChange}
+                          />
+                        </Form.Item>
+                        <Button
+                          type="primary"
+                          onClick={() => {
+                            setVisible(true);
+                          }}
+                        >
+                          Advance Price
+                        </Button>
+                      </>
                     ) : null}
 
                     <MinusCircleOutlined
