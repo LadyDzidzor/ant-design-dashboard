@@ -1,21 +1,7 @@
-import React, { useState } from "react";
-import {
-  Form,
-  Button,
-  Input,
-  InputNumber,
-  Card,
-  Space,
-  Switch,
-  Tooltip,
-} from "antd";
-import {
-  MinusCircleOutlined,
-  PlusOutlined,
-  CheckOutlined,
-  CloseOutlined,
-  InfoCircleOutlined,
-} from "@ant-design/icons";
+import React from "react";
+import { Form, Button, Input } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import AttributeCard from "./attributeCard.component";
 
 const layout = {
   labelCol: {
@@ -33,7 +19,6 @@ const tailLayout = {
 };
 
 const AddVariationForm = () => {
-  const [primaryAttrPrice, setAttrPrice] = useState(false);
   const { Item } = Form;
 
   const onFinish = (values) => {
@@ -42,16 +27,6 @@ const AddVariationForm = () => {
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
-  };
-
-  const onChange = (value) => {
-    console.log("changed", value);
-  };
-
-  const onPrimarySwitch = (checked) => {
-    console.log(`switch to ${checked}`);
-    if (checked) setAttrPrice(checked);
-    if (!checked) setAttrPrice(!primaryAttrPrice);
   };
 
   return (
@@ -79,134 +54,7 @@ const AddVariationForm = () => {
                 <>
                   {fields.map((field) => (
                     <>
-                      <Card
-                        key={field.key}
-                        extra={
-                          <MinusCircleOutlined
-                            onClick={() => {
-                              remove(field.name);
-                            }}
-                          />
-                        }
-                        style={{ marginBottom: 10 }}
-                      >
-                        <Form.Item
-                          {...field}
-                          name={[field.name, "attrName"]}
-                          fieldKey={[field.fieldKey, "attrName"]}
-                        >
-                          <Input placeholder="Attribute Name" />
-                        </Form.Item>
-                        <div style={{ marginBottom: 10 }}>
-                          Make primary attribute{" "}
-                          <Switch
-                            checkedChildren={<CheckOutlined />}
-                            unCheckedChildren={<CloseOutlined />}
-                            {...field}
-                            name={[field.name, "primaryAttr"]}
-                            key={[field.fieldKey, "primaryAttr"]}
-                            onChange={onPrimarySwitch}
-                          />{" "}
-                          <Tooltip title="Making primary attribute means pricing will be base it.">
-                            <InfoCircleOutlined />
-                          </Tooltip>
-                        </div>
-                        <Form.List
-                          name={[field.name, "variation"]}
-                          key={[field.fieldKey, "variation"]}
-                        >
-                          {(field, { add, remove }) => {
-                            return (
-                              <div>
-                                {field.map((field) => (
-                                  <Space
-                                    key={field.key}
-                                    style={{ display: "flex", marginBottom: 5 }}
-                                    align="start"
-                                  >
-                                    <Form.Item
-                                      {...field}
-                                      name={[field.name, "variationName"]}
-                                      fieldKey={[
-                                        field.fieldKey,
-                                        "variationName",
-                                      ]}
-                                      rules={[
-                                        {
-                                          required: true,
-                                          message: "Missing variation name",
-                                        },
-                                      ]}
-                                    >
-                                      <Input placeholder="Name" />
-                                    </Form.Item>
-
-                                    <Form.Item
-                                      {...field}
-                                      name={[field.name, "quantity"]}
-                                      fieldKey={[field.fieldKey, "quantity"]}
-                                      rules={[
-                                        {
-                                          required: true,
-                                          message: "Missing quantity",
-                                        },
-                                      ]}
-                                    >
-                                      <Input placeholder="Quantity" />
-                                    </Form.Item>
-
-                                    {primaryAttrPrice ? (
-                                      <Form.Item
-                                        {...field}
-                                        name={[field.name, "price"]}
-                                        fieldKey={[field.fieldKey, "price"]}
-                                        rules={[
-                                          {
-                                            required: true,
-                                            message: "Missing price",
-                                          },
-                                        ]}
-                                      >
-                                        <InputNumber
-                                          defaultValue={0}
-                                          formatter={(value) =>
-                                            `\u00A2 ${value}`.replace(
-                                              /\B(?=(\d{3})+(?!\d))/g,
-                                              ","
-                                            )
-                                          }
-                                          parser={(value) =>
-                                            value.replace(/\u00A2\s?|(,*)/g, "")
-                                          }
-                                          onChange={onChange}
-                                        />
-                                      </Form.Item>
-                                    ) : null}
-
-                                    <MinusCircleOutlined
-                                      onClick={() => {
-                                        remove(field.name);
-                                      }}
-                                    />
-                                  </Space>
-                                ))}
-
-                                <Form.Item>
-                                  <Button
-                                    type="dashed"
-                                    onClick={() => {
-                                      add();
-                                    }}
-                                    block
-                                  >
-                                    <PlusOutlined /> Add field
-                                  </Button>
-                                </Form.Item>
-                              </div>
-                            );
-                          }}
-                        </Form.List>
-                      </Card>
+                      <AttributeCard remove={remove} field={field} />
                     </>
                   ))}
 
