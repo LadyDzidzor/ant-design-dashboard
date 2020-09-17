@@ -6,6 +6,7 @@ import React from "react";
 import AddProduct from "../components/addproduct.component";
 import AddProductVariation from "../components/addvariation.component";
 import HomeComponent from "../components/dashboard.component";
+import SingleOrder from "../components/order.component";
 import Orders from "../components/orders.component";
 import Products from "../components/products.component";
 import UploadCSV from "../components/uploadCSV.component";
@@ -42,6 +43,11 @@ const Routes = [
     path: "/dashboard/variations",
     main: Variations,
     name: () => <>Product Variations</>,
+  },
+  {
+    path: "/dashboard/orders/:id",
+    main: SingleOrder,
+    name: () => <>Order</>,
   },
   {
     path: "/dashboard/orders",
