@@ -87,7 +87,7 @@ const DashboardPage = (props) => {
                   <NavLink to={`${url}/upload-csv`}>Upload CSV</NavLink>
                 </Menu.Item>
                 <Menu.Item key="5">
-                  <NavLink to={`${url}/variations`}>Variation</NavLink>
+                  <NavLink to={`${url}/variations`}>Variations</NavLink>
                 </Menu.Item>
               </SubMenu>
               <SubMenu key="sub1" icon={<ShoppingOutlined />} title="Orders">
