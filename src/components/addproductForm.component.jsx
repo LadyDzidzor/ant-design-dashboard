@@ -17,6 +17,7 @@ import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { getBase64 } from "../core/_helper";
+import useFileUpload from "../core/files.core";
 
 const layout = {
   labelCol: {
@@ -53,6 +54,7 @@ const AddProductForm = () => {
   const { Item } = Form;
   const { Option } = Select;
   const { Text } = Typography;
+  const { onUploadChange } = useFileUpload();
   let index = 0;
   let lastFetchId = 0;
 
@@ -113,12 +115,29 @@ const AddProductForm = () => {
       fetching: false,
     });
   };
+  const handleRelateChange = (value) => {
+    setVariation({
+      ...variationSate,
+      value,
+      data: [],
+      fetching: false,
+    });
+  };
 
   const handleImageCancel = () =>
     setImageState({ ...imagesState, previewVisible: false });
 
-  const handleImageChange = ({ fileList }) =>
+  const handleImageChange = ({ fileList }) => {
+    console.log(fileList);
     setImageState({ ...imagesState, fileList });
+    onUploadChange(fileList, "product-name");
+  };
+
+  const dummyRequest = ({ file, onSuccess }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 0);
+  };
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -133,13 +152,6 @@ const AddProductForm = () => {
         file.name || file.url.substring(file.url.lastIndexOf("/") + 1),
     });
   };
-
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-  );
 
   const { items, name } = categoryState;
   const { fetching, data, value } = variationSate;
@@ -276,6 +288,7 @@ const AddProductForm = () => {
             }}
             onChange={(event, editor) => {
               const data = editor.getData();
+              console.log(`this is the data:: ${data}`);
               console.log({ event, editor, data });
             }}
             onBlur={(event, editor) => {
@@ -347,21 +360,29 @@ const AddProductForm = () => {
         <Text strong style={{ marginBottom: 24 }}>
           Images
         </Text>
-        <Item name="images" style={{ marginTop: 16 }}>
-          <Upload
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        <Item name="images" style={{ margin: "20px 0" }}>
+          <Upload.Dragger
+            name="productName"
+            multiple
             listType="picture-card"
             fileList={fileList}
             onPreview={handlePreview}
             onChange={handleImageChange}
+            customRequest={dummyRequest}
           >
-            {fileList.length >= 8 ? null : uploadButton}
-          </Upload>
+            <p className="ant-upload-drag-icon">
+              <PlusOutlined />
+            </p>
+            <p className="ant-upload-text">
+              Click or drag file to this area to upload
+            </p>
+          </Upload.Dragger>
           <Modal
             visible={previewVisible}
             title={previewTitle}
             footer={null}
             onCancel={handleImageCancel}
+            style={{ margin: "20px 0" }}
           >
             <img alt="example" style={{ width: "100%" }} src={previewImage} />
           </Modal>
@@ -374,7 +395,7 @@ const AddProductForm = () => {
           <Select
             mode="multiple"
             value={value}
-            placeholder="Select variation"
+            placeholder="Select related"
             notFoundContent={
               fetching ? (
                 <Spin
@@ -384,17 +405,20 @@ const AddProductForm = () => {
             }
             filterOption={false}
             onSearch={fetchVariation}
-            onChange={handleVariationChange}
+            onChange={handleRelateChange}
             style={{ width: "100%" }}
           >
             {data.map((d) => (
               <Option key={d.value}>{d.text}</Option>
             ))}
           </Select>
-          <Skeleton.Image />
-          <Skeleton.Image />
-          <Skeleton.Image />
         </Item>
+        <div>
+          <Skeleton.Image />
+          <Skeleton.Image />
+          <Skeleton.Image />
+        </div>
+
         <Item {...tailLayout}>
           <Button type="primary" htmlType="submit">
             Add Product
